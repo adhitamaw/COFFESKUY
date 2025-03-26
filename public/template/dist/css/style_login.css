@@ -1,0 +1,269 @@
+@import url('https://fonts.googleapis.com/css2?family=Jaldi:wght@400;700&family=Philosopher&family=Poppins:wght@400;600;700&display=swap');
+:root{
+    --main-font : 'Poppins', sans-serif;
+    --second-font : 'Philosopher', sans-serif;
+    --third-font : 'Jaldi', sans-serif;
+}
+
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    list-style: none;
+    text-decoration: none;
+}
+
+body{
+    background-image: url("../images/background.png");
+    background-repeat: no-repeat;
+    background-size: 100%;
+    margin: 0px;
+    background-color: #cccccc;
+    font-family: var(--main-font);
+    display: flex;
+    flex-direction: center;
+    min-height: 105vh; 
+    backdrop-filter: blur(30px);
+}
+
+.form{
+    margin: auto;
+}
+
+.form .form-container{
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 1280px; 
+    height: 695px; 
+    background: #F1E5D2;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    border-radius: 23px;
+}
+
+.form-container .left{
+    position: relative;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 0 0 62.5%;
+}
+
+.left .create-account{
+    font-family: var(--main-font);
+    font-weight: 600;
+    font-size: 2.5rem;
+    text-align: center; 
+    color: #494141;
+}
+
+.left .logo-container{
+    display: flex;
+    flex-direction: row;
+    gap: 30px;
+    margin-top: 20px;
+}
+
+.logo-container .ellipse1{
+    width: 75px; 
+    height: 75px; 
+    border-radius: 9999px; 
+    border: 2px #656565 solid;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container .ellipse2{
+    width: 75px; 
+    height: 75px; 
+    border-radius: 9999px; 
+    border: 2px #656565 solid;
+    display: flex;
+    align-items: center;
+}
+
+.logo-container .ellipse3{
+    width: 75px; 
+    height: 75px; 
+    border-radius: 9999px; 
+    border: 2px #656565 solid;
+    display: flex;
+    align-items: center;
+}
+
+.ellipse1 .instagram{
+    display: flex;
+    margin-left: 10px;
+    scale: 0.7;
+
+}
+
+.ellipse2 .google{
+    display: flex;
+    margin-left: 12px;
+    scale: 0.7;
+}
+
+.ellipse3 .facebook{
+    display: flex;
+    margin-left: 10px;
+    scale: 0.7;
+}
+
+.left .reg-desc{
+    margin-top: 30px;
+    width: 508px; 
+    text-align: center; 
+    color: #454545; 
+    font-size: 1.5rem; 
+    font-family: var(--main-font); 
+    font-weight: 400; 
+    word-wrap: break-word;
+
+}
+
+.left .input{
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 30px;
+    align-items: center;
+}
+
+.input .forgot{
+    margin-top: 10px;
+    width: 508px; 
+    text-align: center; 
+    color: #454545; 
+    font-size: 1.5rem; 
+    font-family: var(--main-font); 
+    font-weight: 400; 
+    word-wrap: break-word;
+}
+
+.input .input-user{
+    position: relative;
+}
+
+.input-user .fa{
+    position: absolute;
+    font-size: 28px;
+    top: 8px;
+    left: 12px;
+    color: #656565;
+    text-align: right;
+}
+
+.input .input-email{
+    position: relative;
+}
+
+.input-email .fa{
+    position: absolute;
+    font-size: 22px;
+    top: 8px;
+    left: 10px;
+    color: #656565;
+    text-align: right;
+}
+
+input#email {
+    height: 40px;
+    width: 400px;
+    font-family: var(--main-font);
+    font-size: 20px;
+    background-color: #D7D7D7;
+    border: none;
+    background-image: url("/assets/images/icon_sms_.png");
+    background-repeat: no-repeat;
+    text-indent: 50px;
+}
+
+input#password {
+    height: 40px;
+    width: 400px;
+    font-family: var(--main-font);
+    font-size: 20px;
+    background-color: #D7D7D7;
+    border: none;
+    background-image: url("../images/icon_lock_.png");
+    background-repeat: no-repeat;
+    text-indent: 50px;
+}
+
+
+input[type=button]{
+    font-family: var(--second-font);
+    font-size: 1.5rem;
+    background-color: #E6CEAD;
+    color: #454545;
+    padding: 15px 35px;
+    border-radius: 50px;
+    width: 200px;
+    border: none;
+}
+
+
+.form-container .right{
+    position: relative;
+    width: 554px; 
+    height: 695px; 
+    background: #E6CEAD; 
+    border-top-right-radius: 23px; 
+    border-bottom-right-radius: 23px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex: 0 0 37.5%;
+}
+
+.right .right-backround{
+    position: absolute;
+    margin-left: 5px;
+    width: 470px;
+    height: 670px;
+}
+
+.right .right-container{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 50px;
+}
+
+.right-container .welcome{
+    font-size: 2.5rem;
+    font-family: var(--main-font);
+    font-weight: 700;
+    color: white;
+    text-shadow: 2px 2px grey;
+}
+
+.right-container .welcome-desc{
+    font-size: 1.5rem;
+    font-family: var(--main-font);
+    text-shadow: 2px 2px grey;
+    text-align: center;
+    color: white;
+    max-width: 400px;
+}
+
+.right-container .btn-login{
+    text-align: center;
+    font-family: var(--second-font);
+    font-size: 1.5rem;
+    color: white;
+    padding: 15px 35px;
+    border-radius: 50px;
+    border: 2px solid white;
+    text-decoration: none;
+    width: 200px;
+    margin-top: 20px;
+}
+
+
