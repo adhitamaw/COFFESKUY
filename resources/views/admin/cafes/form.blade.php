@@ -10,7 +10,7 @@
 
     <div class="row g-3">
         <div class="col-lg-7">
-            <div class="cs-card p-3 p-md-4">
+            <div class="panel p-3 p-md-4">
                 <div class="mb-3">
                     <label class="form-label" for="nama">Nama</label>
                     <input id="nama" name="nama" value="{{ old('nama', $cafe->nama) }}" required class="form-control @error('nama') is-invalid @enderror">
@@ -41,7 +41,7 @@
         </div>
 
         <div class="col-lg-5">
-            <div class="cs-card p-3 p-md-4">
+            <div class="panel p-3 p-md-4">
                 <label class="form-label">Lokasi <span class="text-muted fw-normal small">· klik peta</span></label>
                 <div id="map" class="admin-map mb-2"></div>
                 <div class="row g-2">

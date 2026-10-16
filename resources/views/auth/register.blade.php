@@ -4,21 +4,17 @@
 
 @section('content')
 @php $role = old('role', request('role') === 'penjual' ? 'penjual' : 'user'); @endphp
-<div class="container auth-wrap py-5">
-    <div class="cs-card auth-card p-4 p-md-5">
-        <h1 class="h4 fw-800 mb-4">Buat akun</h1>
+<div class="container auth-wrap">
+    <div class="panel auth-card p-4 p-md-5">
+        <h1 class="page-title mb-4">Buat akun</h1>
 
         <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
             @csrf
-            <div class="row g-2 mb-3">
-                <div class="col-6 role-option">
-                    <input type="radio" name="role" id="role-user" value="user" @checked($role === 'user')>
-                    <label for="role-user"><i class="fa-solid fa-mug-hot d-block mb-1"></i><span class="small fw-semibold">Pembeli</span></label>
-                </div>
-                <div class="col-6 role-option">
-                    <input type="radio" name="role" id="role-penjual" value="penjual" @checked($role === 'penjual')>
-                    <label for="role-penjual"><i class="fa-solid fa-store d-block mb-1"></i><span class="small fw-semibold">Penjual</span></label>
-                </div>
+            <div class="role-pick mb-3">
+                <input type="radio" name="role" id="role-user" value="user" @checked($role === 'user')>
+                <label for="role-user"><span class="fw-semibold"><i class="fa-solid fa-mug-hot me-1"></i>Pembeli</span><small>Pesan & beri review</small></label>
+                <input type="radio" name="role" id="role-penjual" value="penjual" @checked($role === 'penjual')>
+                <label for="role-penjual"><span class="fw-semibold"><i class="fa-solid fa-store me-1"></i>Penjual</span><small>Kelola cafe & menu</small></label>
             </div>
             @error('role') <div class="text-danger small mb-2">{{ $message }}</div> @enderror
 

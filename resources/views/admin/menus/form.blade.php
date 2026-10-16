@@ -8,7 +8,7 @@
     @csrf
     @if ($menu->exists) @method('PUT') @endif
 
-    <div class="cs-card p-3 p-md-4">
+    <div class="panel p-3 p-md-4">
         <div class="mb-3">
             <label class="form-label" for="cafe_id">Cafe</label>
             <select id="cafe_id" name="cafe_id" required class="form-select @error('cafe_id') is-invalid @enderror">

@@ -11,7 +11,7 @@
     <input type="search" name="q" value="{{ $q }}" class="form-control" placeholder="Cari cafe...">
 </form>
 
-<div class="cs-card overflow-hidden">
+<div class="panel overflow-hidden">
     <div class="table-responsive">
         <table class="table mb-0">
             <thead>
@@ -27,7 +27,7 @@
                 @forelse ($cafes as $cafe)
                     <tr>
                         <td>
-                            <a href="{{ route('admin.cafes.show', $cafe) }}" class="d-flex align-items-center gap-2 text-dark">
+                            <a href="{{ route('admin.cafes.show', $cafe) }}" class="d-flex align-items-center gap-2 text-reset">
                                 <img src="{{ asset('image/' . $cafe->gambar) }}" class="table-thumb" alt="">
                                 <span class="min-w-0">
                                     <span class="fw-semibold d-block">{{ $cafe->nama }}</span>
@@ -38,7 +38,7 @@
                         <td class="d-none d-md-table-cell small">{{ $cafe->user->name ?? '-' }}</td>
                         <td>
                             @if ($cafe->rating)
-                                <span class="rating-pill"><i class="fa-solid fa-star"></i>{{ number_format($cafe->rating, 1) }}</span>
+                                <span class="score"><i class="fa-solid fa-star"></i>{{ number_format($cafe->rating, 1) }}</span>
                                 <span class="small text-muted">({{ $cafe->reviews_count }})</span>
                             @else
                                 <span class="small text-muted">-</span>

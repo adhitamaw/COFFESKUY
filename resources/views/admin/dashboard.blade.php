@@ -3,29 +3,24 @@
 @section('title', 'Ringkasan')
 
 @section('content')
-<div class="row g-3 mb-4">
+<div class="kpi-strip mb-4">
     @foreach ([
-        ['Cafe', $stats['cafe'], 'fa-store', '#f5e9dc', '#6f4e37', route('admin.cafes.index')],
-        ['Menu', $stats['menu'], 'fa-mug-hot', '#e8f1fb', '#2563a8', route('admin.menus.index')],
-        ['Review', $stats['review'], 'fa-comment', '#e3f5ea', '#1d7a46', route('admin.reviews.index')],
-        ['Rata-rata', $stats['rating'] ?: '-', 'fa-star', '#fff3d6', '#b07a00', route('admin.reviews.index')],
-    ] as [$label, $value, $icon, $bg, $fg, $url])
-        <div class="col-6 col-xl-3">
-            <a href="{{ $url }}" class="cs-card stat-card p-3 d-flex align-items-center gap-3 text-dark h-100">
-                <span class="icon" style="background: {{ $bg }}; color: {{ $fg }}"><i class="fa-solid {{ $icon }}"></i></span>
-                <span>
-                    <span class="d-block fs-4 fw-800 lh-1">{{ $value }}</span>
-                    <span class="small text-muted">{{ $label }}</span>
-                </span>
-            </a>
-        </div>
+        ['Cafe', $stats['cafe'], 'fa-store', route('admin.cafes.index')],
+        ['Menu', $stats['menu'], 'fa-mug-hot', route('admin.menus.index')],
+        ['Review', $stats['review'], 'fa-comment', route('admin.reviews.index')],
+        ['Rata-rata rating', $stats['rating'] ? number_format($stats['rating'], 1) : '–', 'fa-star', route('admin.reviews.index')],
+    ] as [$label, $value, $icon, $url])
+        <a href="{{ $url }}" class="kpi">
+            <span class="label"><i class="fa-solid {{ $icon }}"></i>{{ $label }}</span>
+            <span class="value">{{ $value }}</span>
+        </a>
     @endforeach
 </div>
 
 @if ($pendingSellers->isNotEmpty())
-    <div class="cs-card p-3 mb-4 border-warning">
+    <div class="panel p-3 mb-4 border-warning">
         <div class="d-flex justify-content-between align-items-center mb-2">
-            <h2 class="h6 fw-bold mb-0"><i class="fa-solid fa-user-clock text-warning me-2"></i>Penjual menunggu persetujuan</h2>
+            <h2 class="h6 fw-bold mb-0">Penjual menunggu persetujuan <span class="count-badge ms-1">{{ $pendingSellers->count() }}</span></h2>
             <a href="{{ route('admin.users.index', ['status' => 'pending']) }}" class="small">Semua</a>
         </div>
         @foreach ($pendingSellers->take(5) as $seller)
@@ -50,21 +45,23 @@
 
 <div class="row g-3">
     <div class="col-lg-4">
-        <div class="cs-card p-3 h-100">
+        <div class="panel p-3 h-100">
             <h2 class="h6 fw-bold mb-3">Sebaran rating</h2>
             @php $totalReviews = max($distribution->sum(), 1); @endphp
-            @for ($i = 5; $i >= 1; $i--)
-                @php $count = $distribution[$i] ?? 0; @endphp
-                <div class="d-flex align-items-center gap-2 mb-2 small">
-                    <span class="text-nowrap" style="width: 28px">{{ $i }} <i class="fa-solid fa-star text-warning"></i></span>
-                    <div class="dist-bar flex-grow-1"><span style="width: {{ round($count / $totalReviews * 100) }}%"></span></div>
-                    <span class="text-muted text-end" style="width: 28px">{{ $count }}</span>
-                </div>
-            @endfor
+            <div class="d-grid gap-2">
+                @for ($i = 5; $i >= 1; $i--)
+                    @php $count = $distribution[$i] ?? 0; @endphp
+                    <div class="dist-row">
+                        <span class="mono">{{ $i }}<i class="fa-solid fa-star ms-1" style="color: var(--crema); font-size: .7rem"></i></span>
+                        <div class="dist-bar" role="img" aria-label="{{ $count }} review bintang {{ $i }}"><span style="width: {{ round($count / $totalReviews * 100) }}%"></span></div>
+                        <span class="mono text-muted text-end">{{ $count }}</span>
+                    </div>
+                @endfor
+            </div>
         </div>
     </div>
     <div class="col-lg-8">
-        <div class="cs-card p-3 h-100">
+        <div class="panel p-3 h-100">
             <div class="d-flex justify-content-between align-items-center mb-2">
                 <h2 class="h6 fw-bold mb-0">Review terbaru</h2>
                 <a href="{{ route('admin.reviews.index') }}" class="small">Semua</a>
@@ -75,7 +72,7 @@
                     <div class="flex-grow-1 min-w-0">
                         <div class="d-flex justify-content-between gap-2">
                             <span class="small"><strong>{{ $review->user->name ?? 'Pengguna' }}</strong>
-                                <span class="text-muted">di {{ $review->cafe->nama ?? '-' }}</span></span>
+                                <span class="text-muted">· {{ $review->cafe->nama ?? '-' }}</span></span>
                             <span class="small text-muted text-nowrap">{{ $review->created_at->diffForHumans() }}</span>
                         </div>
                         <div class="small">@include('partials.stars', ['value' => $review->rating])</div>

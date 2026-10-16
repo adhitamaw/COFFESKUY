@@ -4,27 +4,26 @@
 
 @section('content')
 <div class="container py-4">
-    <form method="GET" class="d-flex flex-column flex-sm-row gap-2 mb-4">
-        <div class="input-group">
-            <span class="input-group-text bg-white border-end-0" style="border-color: var(--cs-line)"><i class="fa-solid fa-magnifying-glass text-muted"></i></span>
-            <input type="search" name="q" value="{{ $q }}" class="form-control border-start-0" placeholder="Cari nama cafe atau lokasi...">
-        </div>
-        <select name="sort" class="form-select w-auto" onchange="this.form.submit()">
-            <option value="rating" @selected($sort === 'rating')>Rating tertinggi</option>
-            <option value="terbaru" @selected($sort === 'terbaru')>Terbaru</option>
-        </select>
-        <button class="btn btn-primary px-4">Cari</button>
-    </form>
+    <div class="d-flex flex-wrap justify-content-between align-items-end gap-3 mb-4">
+        <h1 class="page-title">Cafe</h1>
+        <form method="GET" class="filter-bar flex-grow-1 justify-content-md-end" role="search">
+            <label for="q" class="visually-hidden">Cari</label>
+            <input id="q" type="search" name="q" value="{{ $q }}" class="form-control" placeholder="Nama cafe atau kota">
+            <label for="sort" class="visually-hidden">Urutkan</label>
+            <select id="sort" name="sort" class="form-select" onchange="this.form.submit()">
+                <option value="rating" @selected($sort === 'rating')>Rating tertinggi</option>
+                <option value="terbaru" @selected($sort === 'terbaru')>Terbaru</option>
+            </select>
+            <button class="btn btn-primary">Cari</button>
+        </form>
+    </div>
 
     @if ($q)
-        <p class="text-muted">{{ $cafes->total() }} hasil untuk "<strong>{{ $q }}</strong>" · <a href="{{ route('cafe.index') }}">reset</a></p>
+        <p class="text-muted"><span class="mono">{{ $cafes->total() }}</span> hasil untuk "{{ $q }}" · <a href="{{ route('cafe.index') }}">hapus pencarian</a></p>
     @endif
 
     @if ($cafes->isEmpty())
-        <div class="cs-card empty-state">
-            <i class="fa-solid fa-mug-saucer d-block"></i>
-            Cafe tidak ditemukan.
-        </div>
+        <div class="empty-state"><i class="fa-solid fa-mug-saucer"></i>Tidak ada cafe yang cocok. Coba kata lain.</div>
     @else
         <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 g-4">
             @foreach ($cafes as $cafe)

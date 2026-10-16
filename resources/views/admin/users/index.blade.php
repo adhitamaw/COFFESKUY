@@ -25,7 +25,7 @@
     </select>
 </form>
 
-<div class="cs-card overflow-hidden">
+<div class="panel overflow-hidden">
     <div class="table-responsive">
         <table class="table mb-0">
             <thead>
@@ -45,7 +45,7 @@
                             <div class="text-muted small">{{ $user->email }}</div>
                         </td>
                         <td class="small">{{ $roleLabel[$user->role] ?? $user->role }}</td>
-                        <td><span class="badge badge-soft-{{ $statusBadge[$user->status] ?? 'secondary' }}">{{ $statusLabel[$user->status] ?? $user->status }}</span></td>
+                        <td><span class="badge-status badge-soft-{{ $statusBadge[$user->status] ?? 'secondary' }}">{{ $statusLabel[$user->status] ?? $user->status }}</span></td>
                         <td class="small text-muted d-none d-md-table-cell">{{ $user->created_at?->translatedFormat('d M Y') }}</td>
                         <td class="text-end text-nowrap">
                             @if ($user->pdf_file)

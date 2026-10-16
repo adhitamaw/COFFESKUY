@@ -17,7 +17,7 @@
     </select>
 </form>
 
-<div class="cs-card overflow-hidden">
+<div class="panel overflow-hidden">
     <div class="table-responsive">
         <table class="table mb-0">
             <thead>

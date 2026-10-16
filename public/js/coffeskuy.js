@@ -25,7 +25,7 @@
             showCancelButton: true,
             confirmButtonText: 'Ya, lanjut',
             cancelButtonText: 'Batal',
-            confirmButtonColor: '#c8873a',
+            confirmButtonColor: getComputedStyle(document.documentElement).getPropertyValue('--accent').trim(),
         }).then((r) => {
             if (r.isConfirmed) {
                 form.dataset.confirmed = '1';
@@ -87,6 +87,20 @@
                 add.disabled = false;
             }
         }
+    });
+
+    // Mode terang/gelap: <button data-theme-toggle>
+    const root = document.documentElement;
+    const isDark = () => (root.dataset.theme || (matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light')) === 'dark';
+    const syncThemeIcons = () => document.querySelectorAll('[data-theme-toggle] i').forEach((i) => {
+        i.className = isDark() ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    });
+    syncThemeIcons();
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('[data-theme-toggle]')) return;
+        root.dataset.theme = isDark() ? 'light' : 'dark';
+        try { localStorage.setItem('cs-theme', root.dataset.theme); } catch (err) {}
+        syncThemeIcons();
     });
 
     // Tombol submit jadi loading supaya tidak dobel klik

@@ -15,8 +15,8 @@
         ];
     @endphp
 
-    <aside class="admin-sidebar p-3" id="sidebar">
-        <a href="{{ route('admin.dashboard') }}" class="cs-brand d-block px-2 mb-4"><i class="fa-solid fa-mug-hot me-1"></i>CoffeSkuy</a>
+    <aside class="admin-sidebar" id="sidebar">
+        <a href="{{ route('admin.dashboard') }}" class="cs-brand px-2 mb-4"><span class="bean"></span>CoffeSkuy</a>
         <nav class="nav flex-column gap-1">
             @foreach ($links as [$route, $pattern, $icon, $label])
                 <a href="{{ route($route) }}" class="nav-link {{ request()->routeIs($pattern) ? 'active' : '' }}">
@@ -26,7 +26,7 @@
             @if ($me->isAdmin())
                 <a href="{{ route('admin.users.index') }}" class="nav-link {{ request()->routeIs('admin.users.*') ? 'active' : '' }}">
                     <i class="fa-solid fa-users"></i>User
-                    @if ($pendingCount)<span class="badge bg-warning text-dark ms-auto">{{ $pendingCount }}</span>@endif
+                    @if ($pendingCount)<span class="count-badge ms-auto">{{ $pendingCount }}</span>@endif
                 </a>
             @endif
         </nav>
@@ -40,12 +40,13 @@
     </aside>
 
     <div class="admin-main">
-        <header class="admin-topbar px-3 px-lg-4 py-3 d-flex align-items-center gap-3 sticky-top">
-            <button class="btn btn-icon btn-outline-primary d-lg-none" onclick="document.getElementById('sidebar').classList.toggle('show')">
+        <header class="admin-topbar admin-content d-flex align-items-center gap-3 sticky-top" style="padding-block: .85rem">
+            <button class="btn btn-icon btn-outline-primary d-lg-none" aria-label="Menu" onclick="document.getElementById('sidebar').classList.toggle('show')">
                 <i class="fa-solid fa-bars"></i>
             </button>
-            <h1 class="h5 fw-800 mb-0 flex-grow-1 text-truncate">@yield('title', 'Ringkasan')</h1>
+            <h1 class="section-title flex-grow-1 text-truncate">@yield('title', 'Ringkasan')</h1>
             @yield('actions')
+            <button type="button" class="btn btn-icon btn-outline-primary" data-theme-toggle aria-label="Ganti tema"><i class="fa-solid fa-moon"></i></button>
             <div class="d-none d-sm-flex align-items-center gap-2">
                 <span class="avatar">{{ strtoupper(substr($me->name, 0, 1)) }}</span>
                 <div class="lh-sm">
@@ -55,7 +56,7 @@
             </div>
         </header>
 
-        <main class="p-3 p-lg-4">
+        <main class="admin-content">
             @yield('content')
         </main>
     </div>

@@ -3,9 +3,9 @@
 @section('title', 'Konfirmasi password')
 
 @section('content')
-<div class="container auth-wrap py-5">
-    <div class="cs-card auth-card p-4 p-md-5">
-        <h1 class="h4 fw-800 mb-4">Konfirmasi password</h1>
+<div class="container auth-wrap">
+    <div class="panel auth-card p-4 p-md-5">
+        <h1 class="page-title mb-4">Konfirmasi password</h1>
         <form method="POST" action="{{ route('password.confirm') }}">
             @csrf
             <div class="mb-4">

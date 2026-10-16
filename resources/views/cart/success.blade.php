@@ -3,18 +3,19 @@
 @section('title', 'Pembayaran')
 
 @section('content')
-<div class="container py-5" style="max-width: 520px">
-    <div class="cs-card p-5 text-center">
+<div class="container py-5">
+    <div class="receipt text-center">
         @if ($paid)
-            <div class="feature-icon mb-3" style="background:#e3f5ea;color:#1d7a46"><i class="fa-solid fa-check"></i></div>
-            <h1 class="h4 fw-800">Pembayaran berhasil</h1>
-            <p class="text-muted">Pesananmu sedang diproses cafe.</p>
+            <span class="badge-status badge-soft-success mb-3">LUNAS</span>
+            <h1 class="h4 mb-2">Pembayaran berhasil</h1>
+            <p class="text-muted small">Pesananmu diteruskan ke cafe.</p>
         @else
-            <div class="feature-icon mb-3"><i class="fa-solid fa-hourglass-half"></i></div>
-            <h1 class="h4 fw-800">Pembayaran belum terkonfirmasi</h1>
-            <p class="text-muted">Cek lagi keranjangmu atau coba bayar ulang.</p>
+            <span class="badge-status badge-soft-warning mb-3">MENUNGGU</span>
+            <h1 class="h4 mb-2">Pembayaran belum terkonfirmasi</h1>
+            <p class="text-muted small">Keranjangmu masih tersimpan. Coba bayar lagi.</p>
         @endif
-        <a href="{{ $paid ? route('cafe.index') : route('cart.index') }}" class="btn btn-primary mt-2">{{ $paid ? 'Kembali belanja' : 'Ke keranjang' }}</a>
+        <div class="rule"></div>
+        <a href="{{ $paid ? route('cafe.index') : route('cart.index') }}" class="btn btn-primary w-100">{{ $paid ? 'Kembali ke cafe' : 'Buka keranjang' }}</a>
     </div>
 </div>
 @endsection

@@ -3,9 +3,9 @@
 @section('title', 'Masuk')
 
 @section('content')
-<div class="container auth-wrap py-5">
-    <div class="cs-card auth-card p-4 p-md-5">
-        <h1 class="h4 fw-800 mb-1">Masuk</h1>
+<div class="container auth-wrap">
+    <div class="panel auth-card p-4 p-md-5">
+        <h1 class="page-title mb-1">Masuk</h1>
         <p class="text-muted mb-4">Selamat datang kembali.</p>
 
         <form method="POST" action="{{ route('login') }}">
