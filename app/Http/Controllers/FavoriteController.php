@@ -1,38 +1,39 @@
 <?php
 
 namespace App\Http\Controllers;
-use Illuminate\Support\Facades\Auth;
-use App\Models\Favorite;
-use App\Models\Cafe;
 
+use App\Models\Cafe;
 use Illuminate\Http\Request;
 
 class FavoriteController extends Controller
 {
-    public function __construct()
+    public function index(Request $request)
     {
-        $this->middleware('auth');
+        $cafeIds = $request->user()->favorites()->pluck('cafe_id');
+        $cafes = Cafe::withRating()->whereIn('id', $cafeIds)->get();
+
+        return view('favorite.index', compact('cafes'));
     }
 
-    public function index(){
-    $user = \Auth::user(); 
-    $favorites = $user->favorites()->with('cafe')->get();
- 
-        return view('favorite.index', compact('favorites'));
-    }
+    public function toggle(Request $request, Cafe $cafe)
+    {
+        $user = $request->user();
+        $favorite = $user->favorites()->where('cafe_id', $cafe->id)->first();
 
-    public function store(Request $request, $cafe) {
-        $user = Auth::user();
-        $favorite = $user->favorites()->where('cafe_id', $cafe)->first();
-    
         if ($favorite) {
             $favorite->delete();
-            return response()->json(['status' => false, 'message' => 'Favorite removed']);
+            $status = false;
+            $message = 'Dihapus dari favorit';
         } else {
-            $user->favorites()->create(['cafe_id' => $cafe]);
-            return response()->json(['status' => true, 'message' => 'Favorite added']);
+            $user->favorites()->create(['cafe_id' => $cafe->id]);
+            $status = true;
+            $message = 'Disimpan ke favorit';
         }
+
+        if ($request->expectsJson()) {
+            return response()->json(['status' => $status, 'message' => $message]);
+        }
+
+        return back()->with('success', $message);
     }
-    
-    
 }

@@ -6,6 +6,7 @@ use Illuminate\Database\Seeder;
 use App\Models\User;
 use App\Models\Cafe;
 use App\Models\Menu;
+use App\Models\Review;
 use Illuminate\Support\Facades\Hash;
 
 class DummyDataSeeder extends Seeder
@@ -29,7 +30,7 @@ class DummyDataSeeder extends Seeder
                 'email' => $adminEmail,
                 'password' => Hash::make('password123'),
                 'role' => 'admin',
-                'status' => 1
+                'status' => 'approved'
             ]);
             $this->command->info('User admin berhasil dibuat');
         } else {
@@ -44,7 +45,7 @@ class DummyDataSeeder extends Seeder
                 'email' => $userEmail,
                 'password' => Hash::make('password123'),
                 'role' => 'user',
-                'status' => 1
+                'status' => 'approved'
             ]);
             $this->command->info('User biasa berhasil dibuat');
         } else {
@@ -171,5 +172,18 @@ class DummyDataSeeder extends Seeder
         }
         
         $this->command->info('10 menu kopi berhasil ditambahkan untuk 2 cafe');
+
+        // Cafe kedua dimiliki akun penjual (jika ada)
+        $seller = User::where('email', 'penjual@coffeskuy.com')->first();
+        if ($seller) {
+            $createdCafes[1]->update(['user_id' => $seller->id]);
+            Menu::where('cafe_id', $createdCafes[1]->id)->update(['user_id' => $seller->id]);
+        }
+
+        // Beberapa review contoh
+        Review::create(['cafe_id' => $createdCafes[0]->id, 'user_id' => $regularUser->id, 'rating' => 5, 'komentar' => 'Kopinya enak, tempatnya nyaman buat kerja.', 'status' => 0]);
+        Review::create(['cafe_id' => $createdCafes[1]->id, 'user_id' => $regularUser->id, 'rating' => 4, 'komentar' => 'Cold brew-nya mantap, agak ramai pas weekend.', 'status' => 0]);
+
+        $this->command->info('Review contoh berhasil ditambahkan');
     }
-} 
+}

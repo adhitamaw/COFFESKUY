@@ -4,34 +4,31 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-
 
 class RoleMiddleware
 {
     /**
-     * Handle an incoming request.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure(\Illuminate\Http\Request): (\Illuminate\Http\Response|\Illuminate\Http\RedirectResponse)  $next
-     * @return \Illuminate\Http\Response|\Illuminate\Http\RedirectResponse
+     * role:dashboard -> admin atau penjual yang sudah di-approve
+     * role:admin     -> hanya admin
      */
-    public function handle(Request $request, Closure $next)
+    public function handle(Request $request, Closure $next, string $level = 'dashboard')
     {
-        if (Auth::check()) {
-            // Izinkan admin, penjual, dan pembeli untuk mengakses
-            if (Auth::user()->role == 'admin' || Auth::user()->role == 'penjual' || Auth::user()->role == 'pembeli') {
-                return $next($request);
-            } else {
-                if ($request->ajax()) {
-                    return response()->json(['error' => 'Access denied'], 403);
-                } else {
-                    return redirect('/')->with('warning', 'Anda tidak memiliki akses yang diperlukan');
-                }
-            }
-        } else {
-            return redirect('/login')->with('warning', 'Silahkan Login');
+        $user = $request->user();
+
+        if (!$user) {
+            return redirect()->route('login');
         }
+
+        $allowed = $level === 'admin' ? $user->isAdmin() : $user->canAccessDashboard();
+
+        if (!$allowed) {
+            if ($request->expectsJson()) {
+                return response()->json(['error' => 'Akses ditolak'], 403);
+            }
+
+            return redirect('/')->with('error', 'Kamu tidak punya akses ke halaman itu.');
+        }
+
+        return $next($request);
     }
 }
-

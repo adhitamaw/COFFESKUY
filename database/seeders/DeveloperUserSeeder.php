@@ -35,5 +35,14 @@ class DeveloperUserSeeder extends Seeder
             'role' => 'user',
             'status' => 'approved', // User biasa tidak perlu approval
         ]);
+
+        // Buat akun penjual yang sudah approved
+        User::create([
+            'name' => 'Penjual CoffeSkuy',
+            'email' => 'penjual@coffeskuy.com',
+            'password' => Hash::make('password123'),
+            'role' => 'penjual',
+            'status' => 'approved',
+        ]);
     }
 }

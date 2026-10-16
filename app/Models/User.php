@@ -14,12 +14,39 @@ class User extends Authenticatable
 
     public function cafes()
     {
-        return $this->hasMany(Cafe::class); //relasi one to many sama cafe
+        return $this->hasMany(Cafe::class);
     }
 
     public function favorites()
     {
-        return $this->hasMany(Favorite::class);  //relasi one to many sama user
+        return $this->hasMany(Favorite::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
+    }
+
+    // Admin dari form lama yang belum di-approve tidak dianggap admin
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin' && $this->status === 'approved';
+    }
+
+    public function isSeller(): bool
+    {
+        return $this->role === 'penjual';
+    }
+
+    // Admin selalu boleh, penjual hanya setelah di-approve
+    public function canAccessDashboard(): bool
+    {
+        return $this->isAdmin() || ($this->isSeller() && $this->status === 'approved');
+    }
+
+    public function ownsCafe(Cafe $cafe): bool
+    {
+        return $this->isAdmin() || $cafe->user_id === $this->id;
     }
     /**
      * The attributes that are mass assignable.

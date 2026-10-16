@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Providers\RouteServiceProvider;
 use App\Models\User;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -49,52 +50,48 @@ class RegisterController extends Controller
      */
     protected function validator(array $data)
     {
-        $rules = [
+        return Validator::make($data, [
             'name' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:users'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ];
-
-        if (array_key_exists('role', $data) && $data['role'] === 'admin') {
-            $rules['pdf'] = ['required', 'file', 'mimes:pdf', 'max:2048'];
-        }
-    
-        return Validator::make($data, $rules);
+            'role' => ['required', 'in:user,penjual'],
+            'pdf' => ['nullable', 'file', 'mimes:pdf', 'max:2048'],
+        ]);
     }
 
     /**
-     * Create a new user instance after a valid registration.
+     * Pembeli langsung aktif, penjual menunggu persetujuan admin.
      *
      * @param  array  $data
      * @return \App\Models\User
      */
     protected function create(array $data)
     {
-        if (isset($data['role'])) {
-            $status = ($data['role'] === 'user') ? 'rejected' : 'pending';
-        } 
-        
+        $isSeller = $data['role'] === 'penjual';
+
         $user = User::create([
             'name' => $data['name'],
             'email' => $data['email'],
-            'role' => isset($data['role']) ? $data['role'] : null,
+            'role' => $data['role'],
             'password' => Hash::make($data['password']),
-            'status' => $status,
+            'status' => $isSeller ? 'pending' : 'approved',
         ]);
-        
-       
-        if (array_key_exists('pdf', $data) && $data['role'] === 'admin') {
 
-            $uploadedPdf = $data['pdf'];
-
-            $filename = time() . '.' . $uploadedPdf->getClientOriginalExtension();
-            $uploadedPdf->move(public_path('pdfs'), $filename);
-        
+        if ($isSeller && isset($data['pdf'])) {
+            $filename = time() . '_' . $user->id . '.pdf';
+            $data['pdf']->move(public_path('pdfs'), $filename);
             $user->update(['pdf_file' => $filename]);
-        
         }
-    
+
         return $user;
-        
+    }
+
+    protected function registered(Request $request, $user)
+    {
+        if ($user->isSeller()) {
+            return redirect('/')->with('info', 'Akun penjual terdaftar. Tunggu persetujuan admin untuk membuka dashboard.');
+        }
+
+        return redirect('/')->with('success', 'Selamat datang, ' . $user->name . '!');
     }
 }

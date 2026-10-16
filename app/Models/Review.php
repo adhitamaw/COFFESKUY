@@ -11,10 +11,15 @@ class Review extends Model
 
     protected $table = 'ratings';
 
-    protected $fillable = ['komentar','rating','cafe_id'];
+    protected $fillable = ['komentar', 'rating', 'cafe_id', 'user_id', 'status'];
 
     public function user()
     {
-        return $this->belongsTo(User::class); // setiap review itu punya 1 user
+        return $this->belongsTo(User::class);
+    }
+
+    public function cafe()
+    {
+        return $this->belongsTo(Cafe::class, 'cafe_id');
     }
 }

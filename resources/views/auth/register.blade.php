@@ -1,125 +1,71 @@
-@extends('layout.master')
+@extends('layouts.app')
+
+@section('title', 'Daftar')
 
 @section('content')
-<!DOCTYPE html>
-<html lang="en">
+@php $role = old('role', request('role') === 'penjual' ? 'penjual' : 'user'); @endphp
+<div class="container auth-wrap py-5">
+    <div class="cs-card auth-card p-4 p-md-5">
+        <h1 class="h4 fw-800 mb-4">Buat akun</h1>
 
-<head>
-    <title>CoffeSkuy</title>
-    {{-- <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script> --}}
-    {{-- <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script> --}}
-</head>
-
-<body>
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Register</div>
-
-                    <div class="card-body">
-                        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-                            @csrf
-
-                            <div class="form-group row">
-                                <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
-                                <div class="col-md-6">
-                                    <i class="fa fa-user icon"></i>
-                                    <input type="text" class="form-control" id="name" name="name" required autofocus>
-                                </div>
-                            </div>
-
-                            @error('name')
-                                <div class="alert alert-danger">{{$message}}</div>
-                            @enderror
-
-                            <div class="form-group row">
-                                <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
-                                <div class="col-md-6">
-                                    <i class="fa fa-envelope icon"></i>
-                                    <input type="email" class="form-control" id="email" name="email" required>
-                                </div>
-                            </div>
-                            @error('email')
-                                <div class="alert alert-danger">{{$message}}</div>
-                            @enderror
-
-                            <div class="form-group row">
-                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
-                                <div class="col-md-6">
-                                    <i class="fa fa-lock icon"></i>
-                                    <input type="password" class="form-control" id="password" name="password" required>
-                                </div>
-                            </div>
-                            @error('password')
-                                <div class="alert alert-danger">{{$message}}</div>
-                            @enderror
-
-                            <div class="form-group row">
-                                <label for="password-confirm" class="col-md-4 col-form-label text-md-right">Confirm Password</label>
-                                <div class="col-md-6">
-                                    <i class="fa fa-lock icon"></i>
-                                    <input type="password" class="form-control" id="password-confirm" name="password_confirmation" required>
-                                </div>
-                            </div>
-                            @error('password-confirm')
-                                <div class="alert alert-danger">{{$message}}</div>
-                            @enderror
-
-                            <div class="form-group row">
-                                <label for="role" class="col-md-4 col-form-label text-md-right">Role</label>
-                                <div class="col-md-6">
-                                    <select id="role" class="form-control" name="role" onchange="togglePdfForm()">
-                                        <option value="user">User</option>
-                                        <option value="penjual">Penjual</option>
-                                        <option value="admin">Admin</option>
-                                    </select>
-                                </div>
-                            </div>
-
-                            <div class="form-group row" id="pdfForm" style="display: none;">
-                                <div class="row">
-                                    <div class="col-md-2" style="margin-left: 8rem;">
-                                        <label for="pdf" class="col-form-label text-md-right">Upload PDF</label>
-                                    </div>
-                                    <div class="col-md-4 " >
-                                        <input type="file" id="pdf" name="pdf" accept=".pdf">
-                                    </div>
-                                </div>
-                            </div>
-
-                            @error('pdf')
-                                <div class="alert alert-danger">{{$message}}</div>
-                            @enderror
-
-                            <div class="form-group row mb-0">
-                                <div class="col-md-6 offset-md-4">
-                                    <button type="submit" class="btn btn-primary btn-submit">Register</button>
-                                    <a  href="/login">Login</a>
-                                </div>
-                                
-                            </div>
-                        </form>
-                    </div>
+        <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
+            @csrf
+            <div class="row g-2 mb-3">
+                <div class="col-6 role-option">
+                    <input type="radio" name="role" id="role-user" value="user" @checked($role === 'user')>
+                    <label for="role-user"><i class="fa-solid fa-mug-hot d-block mb-1"></i><span class="small fw-semibold">Pembeli</span></label>
+                </div>
+                <div class="col-6 role-option">
+                    <input type="radio" name="role" id="role-penjual" value="penjual" @checked($role === 'penjual')>
+                    <label for="role-penjual"><i class="fa-solid fa-store d-block mb-1"></i><span class="small fw-semibold">Penjual</span></label>
                 </div>
             </div>
-        </div>
+            @error('role') <div class="text-danger small mb-2">{{ $message }}</div> @enderror
+
+            <div class="mb-3">
+                <label for="name" class="form-label">Nama</label>
+                <input id="name" type="text" name="name" value="{{ old('name') }}" required autofocus
+                    class="form-control @error('name') is-invalid @enderror">
+                @error('name') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+            <div class="mb-3">
+                <label for="email" class="form-label">Email</label>
+                <input id="email" type="email" name="email" value="{{ old('email') }}" required
+                    class="form-control @error('email') is-invalid @enderror">
+                @error('email') <div class="invalid-feedback">{{ $message }}</div> @enderror
+            </div>
+            <div class="row g-2 mb-3">
+                <div class="col-sm-6">
+                    <label for="password" class="form-label">Password</label>
+                    <input id="password" type="password" name="password" required minlength="8" autocomplete="new-password"
+                        class="form-control @error('password') is-invalid @enderror" placeholder="Min. 8 karakter">
+                </div>
+                <div class="col-sm-6">
+                    <label for="password-confirm" class="form-label">Ulangi</label>
+                    <input id="password-confirm" type="password" name="password_confirmation" required autocomplete="new-password" class="form-control">
+                </div>
+                @error('password') <div class="text-danger small">{{ $message }}</div> @enderror
+            </div>
+
+            <div class="mb-3 {{ $role === 'penjual' ? '' : 'd-none' }}" id="pdfField">
+                <label for="pdf" class="form-label">Dokumen usaha <span class="text-muted fw-normal">(PDF, opsional)</span></label>
+                <input id="pdf" type="file" name="pdf" accept=".pdf" class="form-control @error('pdf') is-invalid @enderror">
+                @error('pdf') <div class="invalid-feedback">{{ $message }}</div> @enderror
+                <div class="form-text">Akun penjual aktif setelah disetujui admin.</div>
+            </div>
+
+            <button class="btn btn-primary w-100" data-loading="Mendaftar...">Daftar</button>
+        </form>
+
+        <p class="text-center text-muted small mt-4 mb-0">Sudah punya akun? <a href="{{ route('login') }}" class="fw-semibold">Masuk</a></p>
     </div>
-
-    <script>
-        function togglePdfForm() {
-            var roleDropdown = document.getElementById('role');
-            var pdfForm = document.getElementById('pdfForm');
-
-            // If the selected role is 'admin', show the PDF form, otherwise hide it
-            pdfForm.style.display = roleDropdown.value === 'admin' ? 'block' : 'none';
-        }
-    </script> 
-    
-
-</body>
-
-</html>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    document.querySelectorAll('input[name="role"]').forEach((el) => el.addEventListener('change', () => {
+        document.getElementById('pdfField').classList.toggle('d-none', el.value !== 'penjual' || !el.checked);
+    }));
+</script>
+@endpush
